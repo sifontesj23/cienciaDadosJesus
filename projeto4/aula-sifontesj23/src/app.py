@@ -1,38 +1,79 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
 
+# Títulos
 st.title("Ciência de Dados")
-st.title("PROUNI 2020")
+st.header("Trabalho 4º Bimestre -Variáveis dummy - Clusterização com K-Means")
+
+# Carregando o arquivo CSV
+url = 'https://dadosabertos.mec.gov.br/arquivos/prouni/bolsista/pda-prouni-2016.csv'
+#url = pd.read_csv('/drive/MyDrive/cienciadados/TB_RH.csv')
+try:
+    PROUNI = pd.read_csv(url, sep=';', encoding='latin-1')
+    st.write("Visualizando os primeiros 10 registros do dataset PROUNI:")
+    st.dataframe(PROUNI.head())
+except Exception as e:
+    st.error("Erro ao carregar os dados. Verifique o URL ou o formato do arquivo.")
+    st.stop()
+
+# Selecionando colunas categóricas
+#quali = [ 'REGIAO_BENEFICIARIO_BOLSA','RACA_BENEFICIARIO_BOLSA']
+#quali2 = [ 'REGIAO_BENEFICIARIO_BOLSA','RACA_BENEFICIARIO_BOLSA','SEXO_BENEFICIARIO_BOLSA']
 
 
-df_ex=pd.DataFrame(np.random.randn(15,4),columns=["a","b","c","d"])
-st.line_chart(df_ex)
-st.bar_chart(df_ex)
+# Transformando colunas categóricas em dummies
+#PROUNI_dummies = pd.get_dummies(PROUNI[quali])
+#PROUNI_dummies2 = pd.get_dummies(PROUNI[quali2])
+
+#st.write("Colunas transformadas em variáveis dummy:", quali)
+#st.dataframe(PROUNI_dummies.head())
+#st.write("Colunas transformadas em variáveis dummy:", quali2)
+#st.dataframe(PROUNI_dummies2.head())
+
+# Aplicando o algoritmo K-Means
+#x = PROUNI_dummies.values
+#kmeans = KMeans(n_clusters=2, random_state=42)
+#kmeans.fit(x)
+#x2 = PROUNI_dummies2.values
+#kmeans = KMeans(n_clusters=5, random_state=42)
+#kmeans.fit(x2)
+ 
+
+# Plotando os clusters com os dois primeiros atributos
+#fig, ax = plt.subplots()
 
 
-fig, ax = plt.subplots()
-ax.scatter(df_ex['a'],df_ex['b'])
-ax.plot([0,2,5],[0,1,2],c='r')
-st.pyplot(fig)
+#plt.scatter(# plota os pontos
+ #   x[:, 0], x[:, 1], #x e y
+  #  c = kmeans.labels_, #cores de acordo com o grupo
+   # marker='o', # pontos com 'o'
+    #edgecolor='black', #cor da borda
+    #cmap='rainbow', #esquema de cores
+    #s=100 #tamanho
+#)
+# Adicionando os centróides
+
+#plt.scatter(# plota os centróides
+ #   kmeans.cluster_centers_[:,0], kmeans.cluster_centers_[:, 1],#x e y
+  #  c='white',  #cor fixa
+   # marker='*', #pontos marcados com estrela
+    #edgecolor='black', #cor da borda
+    #s=100 #tamanho
+#)
+
+#ax.set_title("Clusterização com K-Means (usando os dois primeiros atributos)")
+#ax.legend()
+#st.pyplot(fig)
+
+
+#################################################################################
+st.header("Segundo teste, usando mais atributos")
 
 
 
-PROUNI = pd.read_csv('https://dadosabertos.mec.gov.br/arquivos/prouni/bolsista/pda-prouni-2016.csv',sep=';', encoding= 'latin-1')
-st.dataframe(PROUNI.head())
-#fig2, ax2 = plt.subplots()
-#ax.scatter(PROUNI['ANO_CONSESAO_BOLSA'],PROUNI['CODIGO_EMEC_IES_BOLSA'])
-#ax.plot([0,2,5],[0,1,2],c='r')
-#st.pyplot(fig2)
-
-#st.line_chart(PROUNI) 
-#st.bar_chart(PROUNI)
-#st.data_editor(PROUNI)
-
-#PROUNI = pd.read_csv('Prouni2020.csv',  sep=';', encoding= 'latin-1' )
-#PROUNI = pd.read_csv('/drive/MyDrive/cienciadados/TB_RH.csv')
-#database_path, sep=';', encoding='latin-1
 
 
 
