@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
 
 # Títulos
 st.title("Ciência de Dados")
@@ -72,11 +73,52 @@ st.pyplot(fig)
 
 st.header("Segundo teste, usando mais atributos")
 
-quali2 = ['NOME_IES_BOLSA', 'TIPO_BOLSA','MODALIDADE_ENSINO_BOLSA','NOME_CURSO_BOLSA','NOME_TURNO_CURSO_BOLSA','SEXO_BENEFICIARIO_BOLSA','RACA_BENEFICIARIO_BOLSA','BENEFICIARIO_DEFICIENTE_FISICO','REGIAO_BENEFICIARIO_BOLSA','SIGLA_UF_BENEFICIARIO_BOLSA','MUNICIPIO_BENEFICIARIO_BOLSA']
+#quali2 = ['NOME_IES_BOLSA', 'TIPO_BOLSA','MODALIDADE_ENSINO_BOLSA','NOME_CURSO_BOLSA','NOME_TURNO_CURSO_BOLSA',
+ #       'SEXO_BENEFICIARIO_BOLSA','RACA_BENEFICIARIO_BOLSA','BENEFICIARIO_DEFICIENTE_FISICO','REGIAO_BENEFICIARIO_BOLSA',
+  #      'SIGLA_UF_BENEFICIARIO_BOLSA','MUNICIPIO_BENEFICIARIO_BOLSA']
+quali2 = ['TIPO_BOLSA','NOME_CURSO_BOLSA','NOME_TURNO_CURSO_BOLSA',
+        'SEXO_BENEFICIARIO_BOLSA','RACA_BENEFICIARIO_BOLSA','BENEFICIARIO_DEFICIENTE_FISICO',
+        'SIGLA_UF_BENEFICIARIO_BOLSA']
+
 PROUNI_dummies2 = pd.get_dummies(PROUNI[quali2])
 st.write("Colunas transformadas em variáveis dummy:")
 st.dataframe(PROUNI_dummies2.head())
 
 
+
+# Aplicando o algoritmo K-Means
+st.write("Aplicando o algoritmo K-Means para o segundo teste")
+x2 = PROUNI_dummies2.values  # Dados para o segundo teste
+kmeans2 = KMeans(n_clusters=6, random_state=42)  # Escolhendo 3 clusters
+kmeans2.fit(x2)
+
+# Redução da dimensionalidade para 2D com PCA
+pca = PCA(n_components=2)
+x2_pca = pca.fit_transform(x2)
+
+# Plotando os clusters com as duas primeiras componentes principais
+fig2, ax2 = plt.subplots()
+
+# Plota os pontos com as cores indicadas pelos clusters
+plt.scatter(x2_pca[:, 0], x2_pca[:, 1], 
+            c=kmeans2.labels_, 
+            marker='o', 
+            edgecolor='black', 
+            cmap='rainbow', 
+            s=100)
+
+# Adicionando os centróides do K-Means
+centroids_pca = pca.transform(kmeans2.cluster_centers_)
+plt.scatter(centroids_pca[:, 0], centroids_pca[:, 1], 
+            c='white', 
+            marker='*', 
+            edgecolor='black', 
+            s=200)
+
+# Título para o gráfico
+plt.title("Clusterização com K-Means (usando todas as colunas transformadas)")
+
+# Exibindo o gráfico gerado
+st.pyplot(fig2)
 
 
